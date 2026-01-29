@@ -44,10 +44,13 @@ class FixRequest(BaseModel):
     action: str
     new_label: Optional[str] = None
 
-class BatchFixRequest(BaseModel):
-    file_paths: list[str]
+class FixItem(BaseModel):
+    file_path: str
     action: str
     new_label: Optional[str] = None
+
+class BatchFixRequest(BaseModel):
+    items: List[FixItem]
 
 # --- Routes ---
 
@@ -64,9 +67,11 @@ def analyze():
 @app.post("/api/batch_fix")
 def batch_fix(req: BatchFixRequest):
     """Step 2 in n8n flow: Apply AI suggestions."""
-    results = [{"path": p, "success": s, "message": m} 
-               for p in req.file_paths 
-               for s, m in [apply_fix(p, req.action, req.new_label)]]
+    results = []
+    for item in req.items:
+        s, m = apply_fix(item.file_path, item.action, item.new_label)
+        results.append({"path": item.file_path, "success": s, "message": m})
+    
     success_count = sum(1 for r in results if r["success"])
     return {"status": "completed", "success": success_count, "results": results}
 

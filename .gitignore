@@ -19,6 +19,7 @@ data/
 *.csv
 *.tsv
 *.json
+!n8n_workflow.json
 *.parquet
 *.zip
 

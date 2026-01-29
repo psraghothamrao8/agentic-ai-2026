@@ -1,4 +1,4 @@
-# Pluto (AutoML Agent) for n8n
+# AutoML Agent for n8n
 
 An autonomous AI Agent designed to clean, optimize, and train image classification models with minimal human intervention. It exposes a simple API optimized for **n8n workflows**.
 

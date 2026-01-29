@@ -24,7 +24,7 @@ An autonomous AI Agent designed to clean, optimize, and train image classificati
 2.  **Run the Server**
     ```bash
     # Run from the root directory
-    python app/main.py
+    python -m app.main
     ```
     *Server will start on `http://0.0.0.0:8000`*
 
@@ -99,7 +99,7 @@ This backend is designed to be the "Brain" of your n8n workflow.
 app/
 ├── main.py                 # The API Entry Point
 ├── config.py               # Paths & Dynamic Folder Detection
-├── logging.py              # Centralized Logger
+├── logger_config.py        # Centralized Logger
 └── services/
     ├── data_service.py     # Hybrid Filtering Logic (Cleanlab + Ensemble)
     ├── training_service.py # Optuna + Training Loop Logic

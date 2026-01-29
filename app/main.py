@@ -11,7 +11,7 @@ import os
 import threading
 
 # Minimal Imports
-from app.config import BASE_DIR, TRAIN_DIR, MODELS_DIR, VAL_DIR, get_data_paths
+from app.config import BASE_DIR, MODELS_DIR, get_data_paths
 from app.services.agent_service import analyze_situation_and_decide
 from app.services.data_service import apply_fix, get_dataset_stats
 from app.services.training_service import run_training

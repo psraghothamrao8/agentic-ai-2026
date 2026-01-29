@@ -13,8 +13,8 @@ try:
 except ImportError:
     pass
 
-from app.config import MODELS_DIR, LOGS_DIR, TRAIN_DIR, VAL_DIR
-from app.logging import setup_logger
+from app.config import MODELS_DIR, LOGS_DIR, get_data_paths
+from app.logger_config import setup_logger
 from app.services.data_service import CustomImageDataset, train_transform, val_transform
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -99,10 +99,14 @@ def train_core(params, ds_train, ds_val, epochs=300, min_epochs=30, patience=15)
 
 def run_automated_training(full_epochs=300):
     logger.info("Starting Auto-ML Training...")
-    if not os.path.exists(TRAIN_DIR): return {"status": "error", "message": "No train dir"}
+    paths = get_data_paths()
+    train_dir = paths["train"]
+    val_dir = paths["val"]
     
-    ds_train = CustomImageDataset(TRAIN_DIR, transform=train_transform)
-    ds_val = CustomImageDataset(VAL_DIR, transform=val_transform)
+    if not os.path.exists(train_dir): return {"status": "error", "message": "No train dir"}
+    
+    ds_train = CustomImageDataset(train_dir, transform=train_transform)
+    ds_val = CustomImageDataset(val_dir, transform=val_transform)
     
     # 1. Hyperparameter Search (Optuna)
     best_params = {"lr": 0.001, "batch_size": 32}

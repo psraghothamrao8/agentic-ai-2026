@@ -3,7 +3,7 @@ import glob
 import shutil
 import numpy as np
 from PIL import Image
-from app.config import TRAIN_DIR, VAL_DIR, TEST_DIR, MODELS_DIR
+from app.config import get_data_paths, MODELS_DIR
 
 # --- Minimal Imports ---
 try:
@@ -74,8 +74,10 @@ class CustomImageDataset(Dataset if HAS_TORCH else object):
         return image, self.labels[idx], self.files[idx]
 
 def get_dataset_stats():
+    paths = get_data_paths()
     stats = {}
-    for split, path in [("train", TRAIN_DIR), ("val", VAL_DIR)]:
+    for split, key in [("train", "train"), ("val", "val")]:
+        path = paths[key]
         if not os.path.exists(path):
              stats[split] = {"count": 0}
              continue
